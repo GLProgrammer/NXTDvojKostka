@@ -10,7 +10,7 @@ import lejos.nxt.comm.RS485;
 
 public class Robot97_Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		String name = "BOT 6";
 		System.out.println("Connecting...");
 		NXTConnection con = RS485.connect("BOT 6", NXTConnection.PACKET);
@@ -38,4 +38,6 @@ public class Robot97_Main {
 			}
 	}
 
+
+	}
 }
