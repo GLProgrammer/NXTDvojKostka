@@ -5,7 +5,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import lejos.nxt.Button;
+import lejos.nxt.SensorPort;
 import lejos.nxt.Sound;
+import lejos.nxt.TouchSensor;
 import lejos.nxt.comm.NXTConnection;
 import lejos.nxt.comm.RS485;
 
@@ -35,6 +37,9 @@ public class Robot97_Main {
 			dos.writeInt(Stav);
 			dos.flush();
 			Thread.sleep(100);
+			dos.writeInt(0);
+			dos.flush();
+			Thread.sleep(100);
 		}
 		catch (IOException ioe) {
 			System.out.println("Write Exception");
@@ -44,6 +49,7 @@ public class Robot97_Main {
 
 	public static void main(String[] args) throws InterruptedException {
 		String name = "BOT 6";
+		TouchSensor stop = new TouchSensor(SensorPort.S3);
 		System.out.println("Connecting...");
 		NXTConnection con = RS485.connect("BOT 6", NXTConnection.PACKET);
 		if (con == null) {
@@ -56,28 +62,21 @@ public class Robot97_Main {
 			dis = con.openDataInputStream();
 			dos = con.openDataOutputStream();
 			while (true){
-
-			switch (Button.readButtons()) {
-			case Button.ID_ENTER:		//Jed 			0
-					Posli(0, 100);
-				break;
-
-			case Button.ID_LEFT:		//Zatoc +		1
-					Posli(1, 90);
-				break;
-
-			case Button.ID_RIGHT:		//Zatoc -		1
-					Posli(1, -90);
-				break;
-
-			case Button.ID_ESCAPE:		//Zastav		2
-					Posli(2);
-				break;
-			default:
-				break;
+					/* TODO: Add switch instead IFs	*/
+			if (Button.ENTER.isDown()) {
+				Posli(0, 100);
+			}
+			if (Button.LEFT.isDown()) {
+				Posli(1, 90);
+			}
+			if (Button.RIGHT.isDown()) {
+				Posli(1, -90);
+			}
+			if (Button.ESCAPE.isDown()) {
+				Posli(2);
 			}
 
-			try{		//POSILANI
+			/*try{		//POSILANI
 				dos.writeInt(0);
 
 				dos.flush();
@@ -88,7 +87,7 @@ public class Robot97_Main {
 			}
 			catch (IOException ioe) {
 				System.out.println("Write Exception");
-			}
+			}*/
 	}
 
 
