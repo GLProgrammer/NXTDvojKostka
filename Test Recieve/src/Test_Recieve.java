@@ -32,15 +32,19 @@ public class Test_Recieve {
 			DataOutputStream dos = con.openDataOutputStream();
 
 			while (true){
-				int n;
+				int function;
+				int parameter;
 				try {
-					n = dis.readInt();
+					function = dis.readInt();
+					Thread.sleep(100);
+					parameter = dis.readInt();
+
 				} catch (EOFException e) {
 					break;
 				}
 
 				//if (n != null) {
-					System.out.println("Read: " + n);
+					System.out.println("Function: " + function + " with parameter: " + parameter);
 					/*switch (n.charAt(1)) {
 					case '0':	//FWD
 
