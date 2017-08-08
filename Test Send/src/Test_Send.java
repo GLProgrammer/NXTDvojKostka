@@ -51,7 +51,15 @@ public class Test_Send{
 				dos.writeInt(1);
 
 				dos.flush();
-				Thread.sleep(5000);
+				Thread.sleep(1000);
+				dos.writeInt(2);
+
+				dos.flush();
+				Thread.sleep(1000);
+				dos.writeInt(3);
+
+				dos.flush();
+				Thread.sleep(1000);
 				/*dos.writeChars("1");
 				dos.flush();
 				Thread.sleep(5000);*/
