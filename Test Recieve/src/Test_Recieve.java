@@ -32,13 +32,14 @@ public class Test_Recieve {
 			DataOutputStream dos = con.openDataOutputStream();
 
 			while (true){
-				char n = ' ';
+				int n = 0;
 				try {
 					n = dis.readChar();
 				} catch (EOFException e) {
 					break;
 				}
-				if (n != ' ') {
+
+				//if (n != null) {
 					System.out.println("Read: " + n);
 					/*switch (n.charAt(1)) {
 					case '0':	//FWD
@@ -92,7 +93,7 @@ public class Test_Recieve {
 				}
 
 
-			}
+			//}
 			System.out.println("Closing...");
 			dis.close();
 			dos.close();
