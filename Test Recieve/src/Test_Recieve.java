@@ -32,9 +32,9 @@ public class Test_Recieve {
 			DataOutputStream dos = con.openDataOutputStream();
 
 			while (true){
-				int n = 0;
+				int n;
 				try {
-					n = dis.readChar();
+					n = dis.readInt();
 				} catch (EOFException e) {
 					break;
 				}
