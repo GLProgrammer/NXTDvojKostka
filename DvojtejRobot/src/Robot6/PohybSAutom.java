@@ -29,8 +29,8 @@ public class PohybSAutom {
 
 			while (true)
 			{
-				while(dis.available() == 0){} // Pocka dokud neco nelze precist
-
+				//while(dis.available() == 0){} // Pocka dokud neco nelze precist
+				//System.out.println("Proslo");
 				vstupKostka = dis.readInt();
 				Thread.sleep(100);
 				vstupHodnota = dis.readInt();
