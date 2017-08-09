@@ -48,18 +48,18 @@ public class Test_Send{
 				dos.flush();
 				dos.writeChars("Awesome");
 				dos.flush();*/
-				dos.writeInt(1);
+				dos.writeInt(0);
 
 				dos.flush();
-				Thread.sleep(1000);
-				dos.writeInt(2);
+				Thread.sleep(500);
+				dos.writeInt(100);
 
 				dos.flush();
-				Thread.sleep(1000);
+				/*Thread.sleep(1000);
 				dos.writeInt(3);
 
 				dos.flush();
-				Thread.sleep(1000);
+				Thread.sleep(1000);*/
 				/*dos.writeChars("1");
 				dos.flush();
 				Thread.sleep(5000);*/
