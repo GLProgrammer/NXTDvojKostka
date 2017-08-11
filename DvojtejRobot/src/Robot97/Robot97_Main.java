@@ -18,6 +18,7 @@ public class Robot97_Main {
 	private static DataInputStream dis;
 	private static DataOutputStream dos;
 	private static LightSensor light;
+	private static LineFollower line;
 	private static int Black;
 	private static int White;
 	private static int CompareValue;
@@ -43,10 +44,8 @@ public class Robot97_Main {
 		try{		//POSILANI
 			dos.writeInt(Stav);
 			dos.flush();
-			Thread.sleep(100);
 			dos.writeInt(Parametr);
 			dos.flush();
-			Thread.sleep(100);
 		}
 		catch (IOException ioe) {
 			System.out.println("Write Exception");
@@ -58,10 +57,6 @@ public class Robot97_Main {
 		try{		//POSILANI
 			dos.writeInt(Stav);
 			dos.flush();
-			Thread.sleep(100);
-			dos.writeInt(0);
-			dos.flush();
-			Thread.sleep(100);
 		}
 		catch (IOException ioe) {
 			System.out.println("Write Exception");
@@ -70,7 +65,7 @@ public class Robot97_Main {
 
 	public static void main(String[] args) throws InterruptedException {
 		light = new LightSensor(SensorPort.S2);
-
+		line = new LineFollower();
 		String name = "BOT 6";
 		TouchSensor stop = new TouchSensor(SensorPort.S3);
 		System.out.println("Connecting...");
@@ -84,61 +79,6 @@ public class Robot97_Main {
 			System.out.println("Connected!!");
 			dis = con.openDataInputStream();
 			dos = con.openDataOutputStream();
-
-			/*Thread.sleep(1000);
-			Sound.twoBeeps();
-			Button.ENTER.waitForPressAndRelease();
-			Black = light.getLightValue();
-			Sound.beep();
-			Button.ENTER.waitForPressAndRelease();
-			White = light.getLightValue();
-			Sound.beep();
-			CompareValue = (Black + White)/2;
-			Button.ENTER.waitForPressAndRelease();*/
-			while (true) {
-				/*if (light.getLightValue() < CompareValue) {
-					Posli(0, 100, 90);
-				}else {
-					Posli(0, 90, 100);
-				}*/
-				Posli(0,100,100);
-
-			/*switch (Button.readButtons()) {
-			case Button.ID_ENTER:
-				Posli(0,100);
-				break;
-
-			case Button.ID_LEFT:
-				Posli(1,90);
-				break;
-
-			case Button.ID_RIGHT:
-				Posli(1,-90);
-				break;
-
-			case Button.ID_ESCAPE:
-				Posli(2);
-				break;
-			default:
-				break;
-			}*/
-
-			}
-			//LineFollower.INIT();
-			/*try{		//POSILANI
-				dos.writeInt(0);
-
-				dos.flush();
-				Thread.sleep(500);
-				dos.writeInt(100);
-
-				dos.flush();
-			}
-			catch (IOException ioe) {
-				System.out.println("Write Exception");
-			}*/
-	//}
-
-
+			line.INIT();
 	}
 }
