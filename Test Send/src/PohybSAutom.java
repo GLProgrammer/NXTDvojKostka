@@ -1,4 +1,3 @@
-package Robot6;
 import lejos.util.TextMenu;
 import lejos.nxt.LCD;
 import lejos.nxt.Motor;
@@ -20,8 +19,6 @@ public class PohybSAutom {
 			DataInputStream dis = con.openDataInputStream();
 			DataOutputStream dos = con.openDataOutputStream();
 
-
-
 			NXTRegulatedMotor motorL = new NXTRegulatedMotor(MotorPort.B);
 			NXTRegulatedMotor motorR = new NXTRegulatedMotor(MotorPort.C);
 
@@ -31,195 +28,182 @@ public class PohybSAutom {
 
 			while (true)
 			{
-				//while(dis.available() == 0){} // Pocka dokud neco nelze precist
-				//System.out.println("Proslo");
-				try{
-					vstupKostka = dis.readInt();
-					Thread.sleep(100);
-					vstupHodnota = dis.readInt();
-				}
-				catch (EOFException e){
-					break;
-				}
+				while(dis.available() == 0){} // Pocka dokud neco nelze precist
 
-				System.out.println("Vstup: " + vstupKostka + " Hodnota: " + vstupHodnota);
+				vstupKostka = dis.readInt();
+				Thread.sleep(100);
+				vstupHodnota = dis.readInt();
+
 				switch(vstupKostka) // Zmena stavu
 				{
 					case 0: // Prikaz JED
-
-						switch (aktualniStav){
-
-							case 0: // Stav IDLE
-
-								aktualniStav = 1;
-
-							break;
-							case 1: // Stav MOTION
-
-								aktualniStav = 1;
-
-							break;
-
-							default:
-
-								System.out.println("Error");
-
-							break;
-						}
-					break;
-
-					case 1: // Prikaz ZATOC
-
+					{
 						switch (aktualniStav)
 						{
 							case 0: // Stav IDLE
-
+							{
 								aktualniStav = 1;
-
+							}
 							break;
 							case 1: // Stav MOTION
-
+							{
 								aktualniStav = 1;
-
+							}
 							break;
 
 							default:
-
+							{
 								System.out.println("Error");
-
+							}
 							break;
 						}
+					}
 
+					case 1: // Prikaz ZATOC
+					{
+						switch (aktualniStav)
+						{
+							case 0: // Stav IDLE
+							{
+								aktualniStav = 1;
+							}
+							break;
+							case 1: // Stav MOTION
+							{
+								aktualniStav = 1;
+							}
+							break;
+
+							default:
+							{
+								System.out.println("Error");
+							}
+							break;
+						}
+					}
 					break;
 
 					case 2: // Prikaz STOP
-
+					{
 						switch (aktualniStav)
 						{
 							case 0: // Stav IDLE
-
+							{
 								aktualniStav = 0;
-
+							}
 							break;
 							case 1: // Stav MOTION
-
+							{
 								aktualniStav = 0;
-
+							}
 							break;
 
 							default:
-
+							{
 								System.out.println("Error");
-
+							}
 							break;
 						}
-
+					}
 					break;
 
 					default:
-
+					{
 						System.out.println("Error");
-					break;
 					}
 
 					switch(vstupKostka) // Vystup (motory L a R)
 					{
 						case 0: // Prikaz JED
-
+						{
 							switch (aktualniStav)
 							{
 								case 0: // Stav IDLE
-
+								{
 									System.out.println("IDLE -> nejede");
-
+								}
 								break;
 								case 1: // // Stav MOTION
-
+								{
 									motorL.setSpeed(vstupHodnota);
 									motorR.setSpeed(vstupHodnota);
 									motorL.forward();
 									motorR.forward();
-
+								}
 								break;
 
 								default:
-
+								{
 									System.out.println("Error");
-
+								}
 								break;
 							}
-
-							break;
-
+						}
+						break;
 						case 1: // Prikaz ZATOC
-
+						{
 							switch (aktualniStav)
 							{
 								case 0: // Stav IDLE
-
+								{
 									System.out.println("IDLE -> nejede");
-
+								}
 								break;
 								case 1: // // Stav MOTION
-									if(vstupHodnota > 0)
-									{
-										motorL.setSpeed(vstupHodnota);
-										motorR.setSpeed(vstupHodnota);
-										motorL.forward();
-										motorR.backward();
-									}
-									else
-									{
-										motorL.setSpeed(vstupHodnota * -1);
-										motorR.setSpeed(vstupHodnota * -1);
-										motorL.backward();
-										motorR.forward();
-									}
+								{
+									motorL.setSpeed(vstupHodnota);
+									motorR.setSpeed(-vstupHodnota);
+									motorL.forward();
+									motorR.forward();
+								}
 								break;
 
 								default:
+								{
 									System.out.println("Error");
+								}
 								break;
 							}
-
+						}
 						break;
 						case 2: // Prikaz STOP
-
+						{
 							switch (aktualniStav)
 							{
 								case 0: // Stav IDLE
-
+								{
 									motorL.stop();
 									motorR.stop();
-
+								}
 								break;
 								case 1: // // Stav MOTION
-
+								{
 									System.out.println("MOTION -> nejde");
-
+								}
 								break;
 
 								default:
-
+								{
 									System.out.println("Error");
-
+								}
 								break;
 							}
-
+						}
 						break;
 						default:
-
+						{
 							System.out.println("Error");
-
+						}
 						break;
 					}
 				}
 			}
-}
+
 /*
 			System.out.println("Closing...");
 			dis.close();
 			dos.close();
 			con.close(); */
-
+		}
+	}
 
