@@ -43,8 +43,8 @@ public class OdtlNakladak
 		motorR = new NXTRegulatedMotor(MotorPort.C); //Doufam ze je R na C
 		motorUS = new NXTRegulatedMotor(MotorPort.A);
 
-		motorUS.setSpeed(30); //Myslim si ze rozumna rychlost
-		int uhelOtaceniMajak = 40;
+		motorUS.setSpeed(60); //Myslim si ze rozumna rychlost
+		int uhelOtaceniMajak = 120;
 
 		DifferentialPilot pilot = new DifferentialPilot(5.6, 18.6, motorL, motorR); //Snad lze zapsat motory i takto
 
@@ -54,16 +54,16 @@ public class OdtlNakladak
 		boolean nepritelUSPredni = false;
 		boolean nepritelUSZadni = false;
 
-		motorUS.rotate(-20); //Otoci na zacatku majak do maximalni (prave nebo leve) pozice
+//		motorUS.rotate(-60); //Otoci na zacatku majak do maximalni (prave nebo leve) pozice
 
 		while(true)
 		{
 
-			if(!motorUS.isMoving()) //Pokud majak prestal rotovat do jedne polohy
-			{
-				motorUS.rotate(uhelOtaceniMajak, true);
-				uhelOtaceniMajak = uhelOtaceniMajak * (-1);
-			}
+//			if(!motorUS.isMoving()) //Pokud majak prestal rotovat do jedne polohy
+//			{
+//				motorUS.rotate(uhelOtaceniMajak, true);
+//				uhelOtaceniMajak = uhelOtaceniMajak * (-1);
+//			}
 
 			if(dis.available() > 0)
 			{
@@ -140,16 +140,16 @@ public class OdtlNakladak
 				}
 			}
 
-			ultrasonicPredni.ping();
-			nepritelUSPredni = ultrasonicPredni.getDistance() < 15;
+			//ultrasonicPredni.continuous();
+			//nepritelUSPredni = ultrasonicPredni.getDistance() < 15;
 
-			ultrasonicZadni.ping();
-			nepritelUSZadni = ultrasonicZadni.getDistance() < 15;
+			//ultrasonicZadni.continuous();
+			//nepritelUSZadni = ultrasonicZadni.getDistance() < 15;
 
-			if(nepritelUSPredni || nepritelUSZadni) //Pokud nektery z US detekuje nepritele
-			{
-				pilot.stop();
-			}
+			//if(ultrasonicZadni.getDistance() < 15) //Pokud nektery z US detekuje nepritele; nepritelUSPredni || nepritelUSZadni; || ultrasonicPredni.getDistance() < 15
+			//{
+			//	pilot.stop();
+			//}
 		}
 
 
