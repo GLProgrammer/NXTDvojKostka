@@ -15,33 +15,48 @@ import lejos.nxt.comm.RS485;
 public class Robot97_Main {
 
 	private static NXTConnection con;
-	private static DataInputStream dis;
-	private static DataOutputStream dos;
-	private static LightSensor light;
+	public static DataInputStream dis;
+	public static DataOutputStream dos;
+	public static LightSensor light;
 	private static LineFollower line;
 	private static int Black;
 	private static int White;
-	private static int CompareValue;
+	public static int CompareValue;
 
 	public static void Posli(int Stav, int Parametr, int Parametr2) throws InterruptedException{
-		try{		//POSILANI
+		try{
 			dos.writeInt(Stav);
 			dos.flush();
-			//Thread.sleep(100);
 			dos.writeInt(Parametr);
 			dos.flush();
-			//Thread.sleep(100);
 			dos.writeInt(Parametr2);
 			dos.flush();
-			//Thread.sleep(100);
+			}
+		catch (IOException ioe) {
+			System.out.println("Write Exception");
 		}
+	}
+
+	public static void Posli(int Stav, int Parametr, int Parametr2, int Parametr3, int Parametr4) throws InterruptedException{
+		try{
+			dos.writeInt(Stav);
+			dos.flush();
+			dos.writeInt(Parametr);
+			dos.flush();
+			dos.writeInt(Parametr2);
+			dos.flush();
+			dos.writeInt(Parametr3);
+			dos.flush();
+			dos.writeInt(Parametr4);
+			dos.flush();
+			}
 		catch (IOException ioe) {
 			System.out.println("Write Exception");
 		}
 	}
 
 	public static void Posli(int Stav, int Parametr) throws InterruptedException{
-		try{		//POSILANI
+		try{
 			dos.writeInt(Stav);
 			dos.flush();
 			dos.writeInt(Parametr);
@@ -53,8 +68,7 @@ public class Robot97_Main {
 	}
 
 	public static void Posli(int Stav) throws InterruptedException{
-
-		try{		//POSILANI
+		try{
 			dos.writeInt(Stav);
 			dos.flush();
 		}
@@ -63,7 +77,8 @@ public class Robot97_Main {
 		}
 	}
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws InterruptedException, IOException {
+		//NaberKostky.INITKostky();
 		light = new LightSensor(SensorPort.S2);
 		line = new LineFollower();
 		String name = "BOT 6";
@@ -79,6 +94,8 @@ public class Robot97_Main {
 			System.out.println("Connected!!");
 			dis = con.openDataInputStream();
 			dos = con.openDataOutputStream();
-			line.INIT();
+			LineFollower.INIT();
+			Sound.beepSequenceUp();
+			NaberKostky.INITKostky();
 	}
 }

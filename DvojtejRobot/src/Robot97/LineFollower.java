@@ -1,58 +1,87 @@
 package Robot97;
 
+import java.io.IOException;
+
 import lejos.nxt.*;
+import lejos.util.Delay;
+import lejos.util.Timer;
+import lejos.util.TimerListener;
 
 public class LineFollower {
-	private static LightSensor light;
+	private static Timer timer;
+	public static LightSensor light;
 	private static Robot97_Main main;
 	private static int Black;
 	private static int White;
-	private static int CompareValue;
+	public static int CompareValue;
 	private static int Toceni;
 	private static TouchSensor Touch;
 	private static boolean NakladakLoaded;
 	private static boolean Follow;
-	private static int pomer;
+	private static int pomerPohonu;
 	private static int X;
+	private static boolean StopPushing;
 
-
-	public static void Reguluj(){
-		pomer = X*(CompareValue - light.getLightValue());
+	public static void Reguluj() throws InterruptedException{
+		//int minSkala = 0;
+		//int maxSkala = 100;
+		while (true){
+		int Aktualni = light.readValue();
+		int AktualniSkala = 100 / (White - Black) * (Aktualni - Black);
+		pomerPohonu = X*(AktualniSkala - 50);
+			main.Posli(0, 200 + pomerPohonu, 200 - pomerPohonu);
+		}
 	}
 
-	public static void Follow() throws InterruptedException{
+	public static void Follow() throws InterruptedException, IOException{
 		//main.Posli(2, 90);
 		//Thread.sleep(5000);
+		Button.ENTER.waitForPressAndRelease();
 		Sound.beepSequenceUp();
-		main.Posli(0,100,100);
-		while (light.getLightValue()>CompareValue) {		}
+		while (light.getLightValue()>CompareValue) {			main.Posli(0,150,150);	}		//Rychlost zacatek
 		main.Posli(1);
 		Thread.sleep(500);
 		Sound.beep();
 		main.Posli(2, 80);
-		Thread.sleep(5000);
+		while (Robot97_Main.dis.readInt() != 1) {
+		}
+		//Thread.sleep(6000);
 		Sound.twoBeeps();
-	//	main.Posli(1);
+		main.Posli(1);
 
 	while (Follow) {
 		if (light.getLightValue() < CompareValue && !NakladakLoaded) {
-			main.Posli(0, 250, 300);
-		} else if(light.getLightValue() > CompareValue && !NakladakLoaded)  {
-			main.Posli(0, 300, 250);
-		} else if (Touch.isPressed()&& !NakladakLoaded) {
+			main.Posli(0, 150, 200);
+		}
+		if(light.getLightValue() > CompareValue && !NakladakLoaded)  {
+			main.Posli(0, 200, 150);
+		}
+		if (Touch.isPressed()&& !NakladakLoaded) {
 			NakladakLoaded = true;
+			Follow = false;
 			Sound.twoBeeps();
 		}
-		else if (!Touch.isPressed()&& NakladakLoaded) {
+		/*if (!Touch.isPressed()	&& NakladakLoaded) {
 			NakladakLoaded = false;
 			main.Posli(1);
 			Follow = false;
+			Sound.beepSequenceUp();
+		}*/
+	}
+	int StartovaciCas = (int)System.currentTimeMillis();
+	int PozadovanyDelay = 15000;
+	int CasNyni;
+	while (Touch.isPressed()) {
+		CasNyni = (int) System.currentTimeMillis();
+		if (CasNyni - StartovaciCas >= PozadovanyDelay ) {
+			break;
 		}
-
+		main.Posli(0,150,150);
 	}
-
+	main.Posli(1);
 	}
-	public static void INIT() throws InterruptedException {
+	public static void INIT() throws InterruptedException, IOException {
+		StopPushing = false;
 		Follow = true;
 		NakladakLoaded = false;
 		X = 10;
@@ -61,13 +90,12 @@ public class LineFollower {
 		Thread.sleep(1000);
 		Sound.twoBeeps();
 		Button.ENTER.waitForPressAndRelease();
-		Black = light.getLightValue();
+		Black = light.readValue();
 		Sound.beep();
 		Button.ENTER.waitForPressAndRelease();
-		White = light.getLightValue();
+		White = light.readValue();
 		Sound.beep();
 		CompareValue = (Black + White)/2;
-		Reguluj();
-		//Follow();
+		Follow();
 	}
 }
